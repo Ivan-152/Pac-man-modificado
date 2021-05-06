@@ -1,13 +1,21 @@
 # Equipo 8
 # Iván Gutiérrez, Abraham Mora
 # Reflexión
+# Iván: Con esta actividad implementé por primera vez el paquete tkinter, mismo que usé
+# para los colores de los fantasmas. De igual manera reforcé mis conocimientos acerca de los 
+# paquetes turtle y freegames. Aprendí a poner texto específico con uso de vectros 
+# en la ventana de turtle, a identificar que elementos de la lista del tablero debía 
+# modificar para que se pudiese formar la carita feliz que realicé. 
+# Por úlitmo, modifiqué la ventana que se desplegaría para que se pudiera apreciar correctamente
+# el puntaje del usuario y las demás funciones del tablero. Todo el proceso se documentó para
+# un mejor entendimiento del lector.
+
 # 6 de Mayo 2021
 
 # Se importan las librerías.
 from random import choice
 from turtle import *
 from freegames import floor, vector
-#from Tkinter import *
 from tkinter import *
 
 # almacena el score- cantidad de galletas consumidas
@@ -23,8 +31,7 @@ aim = vector(5, 0)
 # crea pacman en la posición (-40,-80)
 pacman = vector(-40, -40)
 
-# colores para background, camino y fantasmas
-#colores= ['red','green','#bebebe', 'white','blue0']
+# colores para fantasmas
 colores= ['red','LimeGreen','chocolate', 'white']
 
 # lista de listas
@@ -126,7 +133,7 @@ def move():
     writer.undo()
     # writer.write(state['score'])
     valor= state['score']
-    writer.write(f'Score:{valor}')
+    writer.write(f'Score: {valor}')
     
     # limpia la ventana
     clear()
@@ -184,14 +191,19 @@ def move():
         k= k+1
     update()
     
+    
     # recorre la lista de fantasmas para ver si
     # coinciden las pos
     for point, course in ghosts:
         if abs(pacman - point) < 20:
-            writer.goto(-170,-10)
+            writer.goto(-180,-10)
             writer.write('GAME OVER', font=('Arial',30,'normal'))
+            writer.goto(-65,200)
+            writer.write('Iván Gutiérrez',font=('Arial',8,'normal'))
+            writer.goto(-65,185)
+            writer.write('Abraham Mora',font=('Arial',8,'normal'))
             return
-
+            # todo esto se despliega hasta el final
     ontimer(move, 50)
 
 def change(x, y):
