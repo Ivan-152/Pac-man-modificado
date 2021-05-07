@@ -1,41 +1,72 @@
+# Equipo 8
+# Iván Gutiérrez, Abraham Mora
+# Reflexión
+"""Abraham Mora A01067621: Pude aprender nuevos codigos y librerias. Fue más retador la labor que tuve para este trabajo, 
+ya que implicaba entender muy bien el codigo de movimiento de los fantasmas y saber en donde comenzar para poder hacerlos un poco más inteligentes.
+De esta forma pude comprender de mejor manera el programa y asi poder terminar el trabajo. Considero que este aprendizaje sera de gran ayuda ya que estamos utilizando
+herramientas universales de programación como Python, por lo que entender más a detalle este lenguaje será un gran complemento a futuro."""
+
+# 6 de Mayo 2021
+
+# Se importan las librerías.
 from random import choice
 from turtle import *
 from freegames import floor, vector
+#from Tkinter import *
+from tkinter import *
 
+# almacena el score- cantidad de galletas consumidas
 state = {'score': 0}
+
+# hace invisible la -> y además se crean 2 objetos de la clase Turtle
 path = Turtle(visible=False)
 writer = Turtle(visible=False)
+
+# saber la dirección que esta viendo pacman
 aim = vector(5, 0)
-pacman = vector(-40, -80)
+
+# crea pacman en la posición (-40,-80)
+pacman = vector(-40, -40)
+
+# colores para background, camino y fantasmas
+#colores= ['red','green','#bebebe', 'white','blue0']
+colores= ['red','LimeGreen','chocolate', 'white']
+
+# lista de listas
 ghosts = [
-    [vector(-180, 160), vector(5, 0)],
-    [vector(-180, -160), vector(0, 5)],
-    [vector(100, 160), vector(0, -5)],
-    [vector(100, -160), vector(-5, 0)],
+    [vector(-180, 160), vector(5, 0)], #segundo cuadrante hacia x positiva (derecha)
+    [vector(-180, -160), vector(0, 5)], # tercer cuadrante hacia y positiva (arriba)
+    [vector(100, 160), vector(0, -5)], # primer cuadrante hacia abajo
+    [vector(100, -160), vector(-5, 0)], # cuarto cuadrante hacia la izquierda
 ]
+# lista de tablero de 20 x 20 = 400 elementos
 tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-    0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-    0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,
-    0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0,
-    0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, # CEJAS
+    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+    0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, # ojos
+    0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, # ojos
+    0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, # ojos
+    0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, # ojos
     0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,
-    0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-    0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0,
-    0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0,
-    0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 
+    0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, # )
+    0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, # )
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, # )
+    0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, # )
+    0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, # )
+    0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, # )
+    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
 
+# ULTIMAS 4 COLUMNAS, PRIMERA COLUMNA, PRIMERA FILA Y ÚLTIMAS DOS FILAS SE DEJAN COMO ESTAN
+
+
+# dibuja un square con su esquina inferior izq
 def square(x, y):
     "Draw square using path at (x, y)."
     path.up()
@@ -56,10 +87,12 @@ def offset(point):
     index = int(x + y * 20)
     return index
 
+# retornar True si point es un title válido
 def valid(point):
     "Return True if point is valid in tiles."
     index = offset(point)
-
+    
+    # si la celda es 0 return False - Pared
     if tiles[index] == 0:
         return False
 
@@ -75,67 +108,174 @@ def world():
     bgcolor('black')
     path.color('blue')
 
+    # recorre toda la lista de tiles
     for index in range(len(tiles)):
+        #extrae el valor que existe en la pos index
         tile = tiles[index]
-
+        
+        #si el valor es 1
         if tile > 0:
-            x = (index % 20) * 20 - 200
-            y = 180 - (index // 20) * 20
-            square(x, y)
-
+            #calcula la x,y donde se dibuja el square
+            x = (index % 20) * 20 - 200 # si index es (10%20)*20-200=0
+            y = 180 - (index // 20) * 20 # 180 -(10// 20)*20=100
+            square(x, y)                # dibuja el square (0,180)
+            
+            # dibuja la galleta sobre el square en el centro del square size 20
             if tile == 1:
                 path.up()
                 path.goto(x + 10, y + 10)
-                path.dot(2, 'white')
+                path.dot(4, 'white')
 
 def move():
     "Move pacman and all ghosts."
     writer.undo()
-    writer.write(state['score'])
-
+    # writer.write(state['score'])
+    valor= state['score']
+    writer.write(f'Score:{valor}')
+    
+    # limpia la ventana
     clear()
 
+    #  si no es pared: pacman.move(aim)
     if valid(pacman + aim):
         pacman.move(aim)
 
+    # pos del tablero
     index = offset(pacman)
 
+    # 1 - camino
     if tiles[index] == 1:
+        # a esa posición le asigna 2
         tiles[index] = 2
+        # se incrementa el score
         state['score'] += 1
+        # calcula la pos x,y del pacman
         x = (index % 20) * 20 - 200
         y = 180 - (index // 20) * 20
+        # dibujar el square sin la galleta
         square(x, y)
 
     up()
+    # se va a la pos del pacman
+    #goto(pacman.x + 10, pacman.y + 10)
     goto(pacman.x + 10, pacman.y + 10)
+    # dibuja el pacman
     dot(20, 'yellow')
-
+    
+    k=0
     for point, course in ghosts:
+        # valida si el ghost point se puede mover en course
         if valid(point + course):
             point.move(course)
-        else:
+        else: # si no se puede mover el fantasma en esa dirección
             options = [
                 vector(5, 0),
                 vector(-5, 0),
                 vector(0, 5),
                 vector(0, -5),
             ]
-            plan = choice(options)
+            
+            # los fantasmas no siempre se mueven
+            # AQUI HAREMOS MÁS INTELIGENTES A LOS FANTASMAS
+            plan = choice(options) # guarda la nueva dirección del fantasma
             course.x = plan.x
             course.y = plan.y
+            
+            R1 = [vector(5,0),vector(0,5)]
+            R2 = [vector(5,0),vector(0,-5)]
+            R3 = [vector(-5,0),vector(0,5)]
+            R4 = [vector(-5,0),vector(0,-5)]
+            
+
+            if point.x < pacman.x: #Pacman esta a la derecha
+                if point.y < pacman.y: #Pacman esta arriba
+                    dif1=abs(point.x-pacman.x) #Diferencia en x
+                    dif2=abs(point.y-pacman.y) #Diferencia en y
+                    
+                    if dif1 > dif2: #Si en x estoy más alejado de pacman que en y
+                        course = vector(5,0)
+                            
+            
+                    else:
+                        if dif2 > dif1: #Si en y estoy más alejado de pacman que en x
+                            course = vector(0,5)
+                              
+                                
+                        else:
+                            course = choice(R1) #Si la distancia es igual con Dif1 y Dif2, se elige al azar
+                                
+                            
+                else: #Pacman esta abajo
+                    dif1=abs(point.x-pacman.x)
+                    dif2=abs(point.y-pacman.y)
+                    
+                    if dif1 > dif2:
+                        course = vector(5,0)
+                            
+                            
+                    else:
+                        if dif2 > dif1:
+                            course = vector(0,-5)
+                                
+                                
+                        else:
+                            course = choice(R2)
+                                
+                            
+            else: #Pacman esta a la izquierda
+                if point.y < pacman.y: #Pacman esta arriba
+                    dif1=abs(point.x-pacman.x)
+                    dif2=abs(point.y-pacman.y)
+                    
+                    if dif1 > dif2:
+                        course = vector(-5,0)
+                            
+                            
+                    else:
+                        if dif2 > dif1:
+                                course = vector(0,5)
+                                
+                                
+                        else:
+                            course = choice(R3)
+                                
+                                
+                else: #Pacman esta abajo
+                    dif1=abs(point.x-pacman.x)
+                    dif2=abs(point.y-pacman.y)
+                    
+                    if dif1 > dif2:
+                        course = vector(-5,0)
+                            
+                            
+                    else:
+                        if dif2 > dif1:
+                            course = vector(0,-5)
+                                
+                        else:
+                            course = choice(R4)
+                                
+            if valid(point+course):
+                point.move(course)
+            
 
         up()
+        # mueve la pos del fantasma
         goto(point.x + 10, point.y + 10)
-        dot(20, 'red')
-
+        # dibuja el fantasma
+        dot(20, colores [k])
+        k= k+1
     update()
-
+    
+    # recorre la lista de fantasmas para ver si
+    # coinciden las pos
     for point, course in ghosts:
         if abs(pacman - point) < 20:
+            writer.goto(-170,-10)
+            writer.write('GAME OVER', font=('Arial',30,'normal'))
             return
 
-    ontimer(move, 100)
+    ontimer(move, 50)
 
 def change(x, y):
     "Change pacman aim if valid."
@@ -143,12 +283,14 @@ def change(x, y):
         aim.x = x
         aim.y = y
 
-setup(420, 420, 370, 0)
+# inicializa la ventana, ancho, alto, pos esquina sup izq de la ventana
+setup(450, 450, 0, 0)
 hideturtle()
 tracer(False)
-writer.goto(160, 160)
+writer.goto(160, 160) #mueve la turtle writer a 160,160
 writer.color('white')
-writer.write(state['score'])
+valor= state['score']
+writer.write(f'Score:{valor}')
 listen()
 onkey(lambda: change(5, 0), 'Right')
 onkey(lambda: change(-5, 0), 'Left')
