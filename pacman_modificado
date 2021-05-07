@@ -1,6 +1,12 @@
 # Equipo 8
 # Iván Gutiérrez, Abraham Mora
 # Reflexión
+
+"""Abraham Mora A01067621: Pude aprender nuevos codigos y librerias. Fue más retador la labor que tuve para este trabajo, 
+ya que implicaba entender muy bien el codigo de movimiento de los fantasmas y saber en donde comenzar para poder hacerlos un poco más inteligentes.
+De esta forma pude comprender de mejor manera el programa y asi poder terminar el trabajo. Considero que este aprendizaje sera de gran ayuda ya que estamos utilizando
+herramientas universales de programación como Python, por lo que entender más a detalle este lenguaje será un gran complemento a futuro."""
+
 # Iván: Con esta actividad implementé por primera vez el paquete tkinter, mismo que usé
 # para los colores de los fantasmas. De igual manera reforcé mis conocimientos acerca de los 
 # paquetes turtle y freegames. Aprendí a poner texto específico con uso de vectros 
@@ -30,7 +36,6 @@ aim = vector(5, 0)
 
 # crea pacman en la posición (-40,-80)
 pacman = vector(-40, -40)
-
 # colores para fantasmas
 colores= ['red','LimeGreen','chocolate', 'white']
 
@@ -131,7 +136,6 @@ def world():
 def move():
     "Move pacman and all ghosts."
     writer.undo()
-    # writer.write(state['score'])
     valor= state['score']
     writer.write(f'Score: {valor}')
     
@@ -182,6 +186,84 @@ def move():
             plan = choice(options) # guarda la nueva dirección del fantasma
             course.x = plan.x
             course.y = plan.y
+            
+            R1 = [vector(5,0),vector(0,5)]
+            R2 = [vector(5,0),vector(0,-5)]
+            R3 = [vector(-5,0),vector(0,5)]
+            R4 = [vector(-5,0),vector(0,-5)]
+            
+
+            if point.x < pacman.x: #Pacman esta a la derecha
+                if point.y < pacman.y: #Pacman esta arriba
+                    dif1=abs(point.x-pacman.x) #Diferencia en x
+                    dif2=abs(point.y-pacman.y) #Diferencia en y
+                    
+                    if dif1 > dif2: #Si en x estoy más alejado de pacman que en y
+                        course = vector(5,0)
+                            
+            
+                    else:
+                        if dif2 > dif1: #Si en y estoy más alejado de pacman que en x
+                            course = vector(0,5)
+                              
+                                
+                        else:
+                            course = choice(R1) #Si la distancia es igual con Dif1 y Dif2, se elige al azar
+                                
+                            
+                else: #Pacman esta abajo
+                    dif1=abs(point.x-pacman.x)
+                    dif2=abs(point.y-pacman.y)
+                    
+                    if dif1 > dif2:
+                        course = vector(5,0)
+                            
+                            
+                    else:
+                        if dif2 > dif1:
+                            course = vector(0,-5)
+                                
+                                
+                        else:
+                            course = choice(R2)
+                                
+                            
+            else: #Pacman esta a la izquierda
+                if point.y < pacman.y: #Pacman esta arriba
+                    dif1=abs(point.x-pacman.x)
+                    dif2=abs(point.y-pacman.y)
+                    
+                    if dif1 > dif2:
+                        course = vector(-5,0)
+                            
+                            
+                    else:
+                        if dif2 > dif1:
+                                course = vector(0,5)
+                                
+                                
+                        else:
+                            course = choice(R3)
+                                
+                                
+                else: #Pacman esta abajo
+                    dif1=abs(point.x-pacman.x)
+                    dif2=abs(point.y-pacman.y)
+                    
+                    if dif1 > dif2:
+                        course = vector(-5,0)
+                            
+                            
+                    else:
+                        if dif2 > dif1:
+                            course = vector(0,-5)
+                                
+                        else:
+                            course = choice(R4)
+                                
+            if valid(point+course):
+                point.move(course)
+            
 
         up()
         # mueve la pos del fantasma
@@ -190,7 +272,6 @@ def move():
         dot(20, colores [k])
         k= k+1
     update()
-    
     
     # recorre la lista de fantasmas para ver si
     # coinciden las pos
