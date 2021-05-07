@@ -1,10 +1,20 @@
 # Equipo 8
 # Iván Gutiérrez, Abraham Mora
 # Reflexión
+
 """Abraham Mora A01067621: Pude aprender nuevos codigos y librerias. Fue más retador la labor que tuve para este trabajo, 
 ya que implicaba entender muy bien el codigo de movimiento de los fantasmas y saber en donde comenzar para poder hacerlos un poco más inteligentes.
 De esta forma pude comprender de mejor manera el programa y asi poder terminar el trabajo. Considero que este aprendizaje sera de gran ayuda ya que estamos utilizando
 herramientas universales de programación como Python, por lo que entender más a detalle este lenguaje será un gran complemento a futuro."""
+
+# Iván: Con esta actividad implementé por primera vez el paquete tkinter, mismo que usé
+# para los colores de los fantasmas. De igual manera reforcé mis conocimientos acerca de los 
+# paquetes turtle y freegames. Aprendí a poner texto específico con uso de vectros 
+# en la ventana de turtle, a identificar que elementos de la lista del tablero debía 
+# modificar para que se pudiese formar la carita feliz que realicé. 
+# Por úlitmo, modifiqué la ventana que se desplegaría para que se pudiera apreciar correctamente
+# el puntaje del usuario y las demás funciones del tablero. Todo el proceso se documentó para
+# un mejor entendimiento del lector.
 
 # 6 de Mayo 2021
 
@@ -12,7 +22,6 @@ herramientas universales de programación como Python, por lo que entender más 
 from random import choice
 from turtle import *
 from freegames import floor, vector
-#from Tkinter import *
 from tkinter import *
 
 # almacena el score- cantidad de galletas consumidas
@@ -27,9 +36,7 @@ aim = vector(5, 0)
 
 # crea pacman en la posición (-40,-80)
 pacman = vector(-40, -40)
-
-# colores para background, camino y fantasmas
-#colores= ['red','green','#bebebe', 'white','blue0']
+# colores para fantasmas
 colores= ['red','LimeGreen','chocolate', 'white']
 
 # lista de listas
@@ -129,9 +136,8 @@ def world():
 def move():
     "Move pacman and all ghosts."
     writer.undo()
-    # writer.write(state['score'])
     valor= state['score']
-    writer.write(f'Score:{valor}')
+    writer.write(f'Score: {valor}')
     
     # limpia la ventana
     clear()
@@ -271,10 +277,14 @@ def move():
     # coinciden las pos
     for point, course in ghosts:
         if abs(pacman - point) < 20:
-            writer.goto(-170,-10)
+            writer.goto(-180,-10)
             writer.write('GAME OVER', font=('Arial',30,'normal'))
+            writer.goto(-65,200)
+            writer.write('Iván Gutiérrez',font=('Arial',8,'normal'))
+            writer.goto(-65,185)
+            writer.write('Abraham Mora',font=('Arial',8,'normal'))
             return
-
+            # todo esto se despliega hasta el final
     ontimer(move, 50)
 
 def change(x, y):
